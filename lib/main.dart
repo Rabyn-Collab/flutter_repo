@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sample/models/sample.dart';
+import 'package:flutter_sample/view/home_page.dart';
 
 
-//inheritance, abstraction, encapsulation, polymorphism
-
-
-extension sDop on String{
-  String doubleTo(){
-    return  this + ' ' +  'hello';
-  }
-
-}
 
 void main (){
-
-String greet = 'Ram';
-print(greet.toUpperCase());
-print(greet.doubleTo());
-
+  runApp(Home());
 
 }
+
+
+
+
+class Home extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: HomePage(),
+    );
+  }
+}
+
+
+
 
 
 
