@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_sample/models/book.dart';
 
 
 
@@ -34,6 +35,38 @@ class HomePage extends StatelessWidget {
       ),
       body: Column(
         children: [
+             Container(
+                height: 200,
+                 width: double.infinity,
+                 child: Image.asset('assets/images/book.jpg', fit: BoxFit.cover,)),
+           SizedBox(height: 20,),
+          Container(
+            height: 400,
+            width: double.infinity,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+                 itemCount: books.length,
+                itemBuilder: (context, index){
+                final book = books[index];
+                    return Container(
+                      child: Row(
+                        children: [
+                          Image.network(book.imageUrl),
+                          Container(
+                            width: 150,
+                            child: Column(
+                              children: [
+                                Text(book.title),
+                                Text(book.summary),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                }
+            ),
+          ),
 
         ],
       ),
