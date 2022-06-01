@@ -41,7 +41,7 @@ class HomePage extends StatelessWidget {
                  child: Image.asset('assets/images/book.jpg', fit: BoxFit.cover,)),
            SizedBox(height: 20,),
           Container(
-            height: 400,
+            height: 210,
             width: double.infinity,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
@@ -49,16 +49,36 @@ class HomePage extends StatelessWidget {
                 itemBuilder: (context, index){
                 final book = books[index];
                     return Container(
+                      width: 380,
+                      padding: EdgeInsets.only(left:index ==0 ?  5 : 0),
                       child: Row(
                         children: [
-                          Image.network(book.imageUrl),
-                          Container(
-                            width: 150,
-                            child: Column(
-                              children: [
-                                Text(book.title),
-                                Text(book.summary),
-                              ],
+                          ClipRRect(
+                             borderRadius: BorderRadius.circular(10),
+                              child: Image.network(book.imageUrl)),
+                          Card(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 5),
+                              height: 210,
+                              width: 230,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text(book.title),
+                                  SizedBox(height: 10,),
+                                  Text(book.summary, maxLines: 5, overflow: TextOverflow.ellipsis,),
+                                  SizedBox(height: 10,),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(book.ratingStar),
+                                     // Spacer(),
+                                      Text(book.genre)
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
                           )
                         ],
@@ -67,6 +87,43 @@ class HomePage extends StatelessWidget {
                 }
             ),
           ),
+
+          Padding(
+            padding: const EdgeInsets.only(top: 17, bottom: 10, left: 10),
+            child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text('You may also like', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),)),
+          ),
+         Container(
+           height: 290,
+           child: ListView.builder(
+               scrollDirection: Axis.horizontal,
+               itemCount: books.length,
+               itemBuilder: (context, index){
+                 final book = books[index];
+                 return   Padding(
+                   padding: const EdgeInsets.symmetric(horizontal: 5),
+                   child: Container(
+                     child: Column(
+                       crossAxisAlignment: CrossAxisAlignment.start,
+                       children: [
+                         Container(
+                           margin: EdgeInsets.only(bottom: 10),
+                             height: 210,
+                             child: ClipRRect(
+                                 borderRadius: BorderRadius.circular(10),
+                                 child: Image.network(book.imageUrl))),
+                         Text(book.title),
+                         SizedBox(height: 7,),
+                         Text(book.genre, style: TextStyle(color: Colors.blueGrey),)
+
+                       ],
+                     ),
+                   ),
+                 );
+               }
+           ),
+         )
 
         ],
       ),
