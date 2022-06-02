@@ -24,6 +24,7 @@ class Book{
 }
 
 List<Book>  books = [
+
   Book(
       imageUrl: 'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcR4BwYfcsXoaALzCCvGYu9vAH35ni549OMEHUOIFO8BSUsRomdy',
       title: 'To Kill a Mockingbird',

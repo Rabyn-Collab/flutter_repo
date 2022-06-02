@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sample/models/book.dart';
+import 'package:flutter_sample/view/detail_page.dart';
+import 'package:get/get.dart';
 
 
 
@@ -48,40 +50,45 @@ class HomePage extends StatelessWidget {
                  itemCount: books.length,
                 itemBuilder: (context, index){
                 final book = books[index];
-                    return Container(
-                      width: 380,
-                      padding: EdgeInsets.only(left:index ==0 ?  5 : 0),
-                      child: Row(
-                        children: [
-                          ClipRRect(
-                             borderRadius: BorderRadius.circular(10),
-                              child: Image.network(book.imageUrl)),
-                          Card(
-                            child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 5),
-                              height: 210,
-                              width: 230,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text(book.title),
-                                  SizedBox(height: 10,),
-                                  Text(book.summary, maxLines: 5, overflow: TextOverflow.ellipsis,),
-                                  SizedBox(height: 10,),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(book.ratingStar),
-                                     // Spacer(),
-                                      Text(book.genre)
-                                    ],
-                                  )
-                                ],
+                    return InkWell(
+                      onTap: (){
+                       Get.to(() => DetailPage(book), transition: Transition.leftToRight);
+                      },
+                      child: Container(
+                        width: 380,
+                        padding: EdgeInsets.only(left:index ==0 ?  5 : 0),
+                        child: Row(
+                          children: [
+                            ClipRRect(
+                               borderRadius: BorderRadius.circular(10),
+                                child: Image.network(book.imageUrl)),
+                            Card(
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 5),
+                                height: 210,
+                                width: 230,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Text(book.title),
+                                    SizedBox(height: 10,),
+                                    Text(book.summary, maxLines: 5, overflow: TextOverflow.ellipsis,),
+                                    SizedBox(height: 10,),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(book.ratingStar),
+                                       // Spacer(),
+                                        Text(book.genre)
+                                      ],
+                                    )
+                                  ],
+                                ),
                               ),
-                            ),
-                          )
-                        ],
+                            )
+                          ],
+                        ),
                       ),
                     );
                 }
