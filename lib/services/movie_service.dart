@@ -12,7 +12,7 @@ class MovieService {
        final response = await dio.get(apiPath, queryParameters: {
          'api_key': '2a0f926961d00c667e191a21c14461f8',
          'language': 'en-US',
-         'page': 1
+         'page': page
        });
        final data= (response.data['results'] as List).map((e) => Movie.fromJson(e)).toList();
        return data;
@@ -31,7 +31,7 @@ class MovieService {
         'api_key': '2a0f926961d00c667e191a21c14461f8',
         'language': 'en-US',
         'query': query,
-        'page': 1
+        'page': page
       });
       if((response.data['results'] as List).isEmpty){
           return [Movie(id: 0, title: 'no-data',

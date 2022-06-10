@@ -38,6 +38,8 @@ dependencies:
   flutter_riverpod: ^1.0.4
   dio: ^4.0.6
   cached_network_image: ^3.2.1
+  youtube_player_flutter: ^8.1.0
+  flutter_offline: "^2.1.0"
 
 dev_dependencies:
   flutter_test:
