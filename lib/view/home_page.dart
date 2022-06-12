@@ -24,7 +24,7 @@ class HomePage extends StatelessWidget {
       ),
         body: OfflineBuilder(
       connectivityBuilder: (BuildContext context, ConnectivityResult connectivity, Widget child,) {
-        return connectivity == ConnectivityResult.none ? Center(child: Text('no connection')): Consumer(
+        return  Consumer(
             builder: (context, ref, child) {
               final movieState = ref.watch(movieProvider);
               return Column(
@@ -56,6 +56,8 @@ class HomePage extends StatelessWidget {
                           padding: EdgeInsets.only(top: 15),
                           icon: Icon(Icons.menu, size: 30,),
                           onSelected: (val) {
+                            searchController.clear();
+                             FocusManager.instance.primaryFocus!.unfocus();
                             ref.read(movieProvider.notifier).changeCategory(
                                 apiPath: val as String);
                           },
@@ -80,7 +82,57 @@ class HomePage extends StatelessWidget {
                   SizedBox(height: 15,),
                   Container(
                     height: 590,
-                    child: movieState.movies.isEmpty ? Center(
+                    child: connectivity == ConnectivityResult.none ? movieState.apiPath == Api.popularMovieUrl ?
+                    GridView.builder(
+                        itemCount: movieState.movies.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          childAspectRatio: 2 / 3,
+                          mainAxisSpacing: 5,
+                          crossAxisSpacing: 5,
+                        ),
+                        itemBuilder: (context, index) {
+                          final movie = movieState.movies[index];
+                          return InkWell(
+                            onTap: () {
+                             if(connectivity  == ConnectivityResult.none){
+
+                               Get.defaultDialog(
+                                 title: 'no connection',
+                                 content: Text('try again later'),
+                                 actions: [
+                                   TextButton(onPressed: (){
+                                     Navigator.of(context).pop();
+                                   }, child: Text('close'))
+                                 ]
+                               );
+
+                             }else{
+                               Get.to(() => DetailPage(movie),
+                                   transition: Transition.leftToRight);
+                             }
+
+
+                            },
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: CachedNetworkImage(
+                                errorWidget: (c, s, d) {
+                                  return Image.asset(
+                                      'assets/images/tmdb.jpg');
+                                },
+                                imageUrl: 'https://image.tmdb.org/t/p/w600_and_h900_bestv2/${movie
+                                    .poster_path}',),
+                            ),
+                          );
+                        }
+                    ) : Center(child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.wifi_off, size: 60,),
+                        Text('no connection'),
+                      ],
+                    )) :    movieState.movies.isEmpty ? Center(
                       child: CircularProgressIndicator(
                         color: Colors.purple,
                       ),
@@ -104,7 +156,10 @@ class HomePage extends StatelessWidget {
                             final before = onNotification.metrics.extentBefore;
                             final max = onNotification.metrics.maxScrollExtent;
                             if (before == max) {
-                              ref.read(movieProvider.notifier).loadMore();
+                              if(connectivity != ConnectivityResult.none){
+                                ref.read(movieProvider.notifier).loadMore();
+                              }
+
                             }
                           }
                           return true;
