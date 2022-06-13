@@ -41,6 +41,16 @@ dependencies:
   youtube_player_flutter: ^8.1.0
   flutter_offline: "^2.1.0"
   shared_preferences: ^2.0.15
+  firebase_core: ^1.17.1
+  cloud_firestore: ^3.1.17
+  firebase_auth: ^3.3.19
+  firebase_storage: ^10.2.17
+  firebase_messaging: ^11.4.1
+  flutter_local_notifications: ^9.6.0
+  firebase_analytics: ^9.1.9
+  flutter_chat_ui: ^1.6.0
+  flutter_firebase_chat_core: ^1.5.4
+  flutter_chat_types: ^3.4.1
 
 dev_dependencies:
   flutter_test:

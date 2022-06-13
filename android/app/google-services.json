@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "625940250184",
+    "project_id": "firbaseapp-45066",
+    "storage_bucket": "firbaseapp-45066.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:625940250184:android:7404146d89c4264b30e27d",
+        "android_client_info": {
+          "package_name": "com.example.flutter_sample"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "625940250184-8a24900vg91lrers6n0nmaj968ejf8lg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2pdwMJLKWqJcrbX-BeqnjPTkNBPelDt4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "625940250184-8a24900vg91lrers6n0nmaj968ejf8lg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
