@@ -1,20 +1,30 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_sample/provider/auth_provider.dart';
+import 'package:flutter_sample/provider/image_provider.dart';
 import 'package:flutter_sample/provider/login_provider.dart';
+import 'package:get/get.dart';
 
 
 
 
 class AuthPage extends StatelessWidget {
 
+  final _form = GlobalKey<FormState>();
+   final nameController = TextEditingController();
+   final mailController = TextEditingController();
+   final passController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Consumer(
             builder: (context, ref, child) {
               final isLogin = ref.watch(loginProvider);
-            //  final image = ref.watch(imageP)
+              final image = ref.watch(imageProvider).image;
               return Form(
+                key: _form,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
                   child: ListView(
@@ -22,39 +32,110 @@ class AuthPage extends StatelessWidget {
                       Text(isLogin ? 'Login Form': 'Sign Up Form', style: TextStyle(fontSize: 20),),
                       SizedBox(height: 10,),
                       if(!isLogin)    TextFormField(
+                        controller: nameController,
+                        validator: (val){
+                          if(val!.isEmpty){
+                             return 'please provide username';
+                          }else if(val.length > 20){
+                            return 'maximum character is 19';
+                          }else{
+                            return null;
+                          }
+                        },
                         decoration: InputDecoration(
                           hintText: 'username'
                         ),
                       ),
                SizedBox(height: 10,),
                       TextFormField(
+                        controller: mailController,
+                        validator: (val){
+                          if(val!.isEmpty){
+                            return 'please provide email';
+                          }else if(!val.contains('@')){
+                            return 'please provide email';
+                          }else{
+                            return null;
+                          }
+                        },
                         decoration: InputDecoration(
                             hintText: 'email'
                         ),
                       ),
                       SizedBox(height: 10,),
                       TextFormField(
+                        controller: passController,
+                        obscureText: true,
+                        validator: (val){
+                          if(val!.isEmpty){
+                            return 'please provide password';
+                          }else if(val.length > 20){
+                            return 'maximum limit is 20';
+                          }else{
+                            return null;
+                          }
+                        },
                         decoration: InputDecoration(
                             hintText: 'password'
                         ),
                       ),
                       SizedBox(height: 15,),
-                 if(!isLogin)   Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black)
+                 if(!isLogin)   InkWell(
+                   onTap: (){
+                     ref.read(imageProvider).imagePick();
+                   },
+                   child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black)
+                          ),
+                          child: image == null ? Center(child: Text('please select an image')):
+                                 Image.file(File(image.path)),
+                          height: 190,
                         ),
-                        child: Center(child: Text('please select an image')),
-                        height: 190,
-                      ),
+                 ),
 
                       SizedBox(height: 15,),
                       ElevatedButton(
-                          onPressed: (){
-                            if(isLogin){
+                          onPressed: () async{
+                            _form.currentState!.save();
+                            if(_form.currentState!.validate()){
+                              FocusScope.of(context).unfocus();
+                              if(isLogin){
+                                final response = await ref.read(authProvider).userLogin(
+                                    email: mailController.text.trim(),
+                                    password: passController.text.trim(),
+                                    );
+                                if(response != 'success'){
+                                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                     duration: Duration(seconds: 1),
+                                       content: Text('$response')
+                                   ));
+                                }
 
-                            }else{
+                              }else{
 
+                                if(image == null){
+                                  Get.defaultDialog(
+                                    title: 'image required',
+                                    content: Text('please select an image'),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: (){
+                                         Navigator.of(context).pop();
+                                      }, child: Text('close'))
+                                    ]
+                                  );
+                                }else{
+                           final response = await ref.read(authProvider).userSignUp(
+                               username: nameController.text.trim(),
+                               email: mailController.text.trim(),
+                               password: passController.text.trim(),
+                               image: image);
+                                }
+
+                              }
                             }
+
 
                       }, child: Text('Submit')),
                       SizedBox(height: 15,),
