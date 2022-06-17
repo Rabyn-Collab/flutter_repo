@@ -17,17 +17,35 @@ void main () async {
 }
 
 
+
+
+
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: StatusPage(),
+       home: StatusPage(),
     );
   }
 }
+
+
+
+class PageViews extends StatelessWidget {
+  const PageViews({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Container()
+    );
+  }
+}
+
 
 
 class CounterApp extends StatelessWidget {

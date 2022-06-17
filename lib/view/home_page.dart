@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
               return Column(
                 children: [
                   Container(
-                    height: 140,
+                    height: 149,
                     child: users.when(
                         data: (data){
                           final dat = data.where((element) => element.id != uid).toList();
@@ -30,7 +30,19 @@ class HomePage extends StatelessWidget {
                             scrollDirection: Axis.horizontal,
                               itemCount: dat.length,
                               itemBuilder: (context, index){
-                              return Image.network(dat[index].imageUrl!);
+                              return Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Column(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 50,
+                                      backgroundImage: NetworkImage(dat[index].imageUrl!),
+                                    ),
+                                    SizedBox(height: 7,),
+                                    Text(dat[index].firstName!, style: TextStyle(fontSize: 16),)
+                                  ],
+                                ),
+                              );
                               },
                           );
                         },
