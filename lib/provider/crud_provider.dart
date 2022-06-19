@@ -2,12 +2,13 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_sample/models/post.dart';
 import 'package:image_picker/image_picker.dart';
 
 
 
 final crudProvider = Provider((ref) => CrudProvider());
-
+final postStream = StreamProvider((ref) => CrudProvider().getPostStream());
 class CrudProvider {
   final postDb = FirebaseFirestore.instance.collection('posts');
 
@@ -69,7 +70,7 @@ class CrudProvider {
 
   Future<String> removePost({ required String postId,required String imageName}) async {
     try {
-        final ref = FirebaseStorage.instance.ref().child('postImage/$imageName}');
+        final ref = FirebaseStorage.instance.ref().child('postImage/$imageName');
         await ref.delete();
          await postDb.doc(postId).delete();
       return 'success';
@@ -81,6 +82,26 @@ class CrudProvider {
 
 
 
+  Stream<List<Post>> getPostStream(){
+    return postDb.snapshots().map((event) => getPostData(event));
+
+  }
+
+  List<Post> getPostData(QuerySnapshot snapshot){
+       return snapshot.docs.map((e) {
+         final json = e.data() as Map<String, dynamic>;
+         return Post(
+             like: Like.fromJson(json['like']),
+             imageUrl: json['imageUrl'],
+             id: e.id,
+             userId: json['userId'],
+             comments:  (json['Comments'] as List).map((e) => Comments.fromJson(e)).toList(),
+             description: json['description'],
+             title: json['title'],
+             imageName: json['imageName']
+         );
+       }).toList();
+  }
 
 
 }
