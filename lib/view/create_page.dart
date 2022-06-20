@@ -97,11 +97,14 @@ class CreatePage extends StatelessWidget {
                                       ]
                                   );
                                 }else{
-                                  final response = ref.read(crudProvider).postAdd(
+                                  final response = await ref.read(crudProvider).postAdd(
                                       title: titleController.text.trim(),
                                       description: descController.text.trim(),
                                       userId: userId,
                                       image: image);
+                                  if(response == 'success'){
+                                    Navigator.of(context).pop();
+                                  }
                                 }
 
                               }

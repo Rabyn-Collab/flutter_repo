@@ -46,23 +46,24 @@ class CrudProvider {
             });
          }else{
 
-           final ref = FirebaseStorage.instance.ref().child('postImage/$imageName}');
-           await ref.delete();
+           final ref = FirebaseStorage.instance.ref().child('postImage/$imageName');
+            await ref.delete();
 
            final ref1 = FirebaseStorage.instance.ref().child('postImage/${image.name}');
            await ref1.putFile(File(image.path));
-           final imageUrl = await ref.getDownloadURL();
+           final imageUrl = await ref1.getDownloadURL();
            final response = await postDb.doc(postId).update({
              'title': title,
              'description': description,
              'imageUrl': imageUrl,
+             'imageName': image.name
            });
 
          }
 
       return 'success';
     } on FirebaseException catch (err) {
-      print(err);
+      print(err.message);
       return '${err.code}';
     }
   }
@@ -102,6 +103,26 @@ class CrudProvider {
          );
        }).toList();
   }
+
+
+
+  Future<String> addLike({ required int like,required String username,required String postId}) async {
+    try {
+      await postDb.doc(postId).update({
+        'like': {
+          'likes': like + 1,
+          'usernames': FieldValue.arrayUnion([username])
+        }
+      });
+      return 'success';
+    } on FirebaseException catch (err) {
+      print(err);
+      return '${err.code}';
+    }
+  }
+
+
+
 
 
 }
