@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sample/provider/auth_provider.dart';
 import 'package:flutter_sample/provider/crud_provider.dart';
+import 'package:flutter_sample/view/detail_page.dart';
 import 'package:flutter_sample/view/edit_page.dart';
+import 'package:flutter_sample/view/user_detail.dart';
 import 'package:flutter_sample/widgets/drawer_widget.dart';
 import 'package:get/get.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -44,15 +46,20 @@ class HomePage extends StatelessWidget {
                               itemBuilder: (context, index){
                               return Padding(
                                 padding: const EdgeInsets.all(10.0),
-                                child: Column(
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 50,
-                                      backgroundImage: NetworkImage(dat[index].imageUrl!),
-                                    ),
-                                    SizedBox(height: 7,),
-                                    Text(dat[index].firstName!, style: TextStyle(fontSize: 16),)
-                                  ],
+                                child: InkWell(
+                                  onTap: (){
+                                    Get.to(() => UserDetail(dat[index]), transition: Transition.leftToRight);
+                                  },
+                                  child: Column(
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 50,
+                                        backgroundImage: NetworkImage(dat[index].imageUrl!),
+                                      ),
+                                      SizedBox(height: 7,),
+                                      Text(dat[index].firstName!, style: TextStyle(fontSize: 16),)
+                                    ],
+                                  ),
                                 ),
                               );
                               },
@@ -124,10 +131,15 @@ class HomePage extends StatelessWidget {
                                          ],
                                        ),
                                        if(uid != data[index].userId)  SizedBox(height: 20,),
-                                       CachedNetworkImage(
-                                        imageUrl: data[index].imageUrl,
-                                         height: 260,
-                                         fit: BoxFit.fitHeight,),
+                                       InkWell(
+                                         onTap: (){
+                                           Get.to(() => DetailPage(data[index], currentUser), transition: Transition.leftToRight);
+                                         },
+                                         child: CachedNetworkImage(
+                                          imageUrl: data[index].imageUrl,
+                                           height: 260,
+                                           fit: BoxFit.fitHeight,),
+                                       ),
                                        SizedBox(height: 10,),
                                        Container(
                                            width: double.infinity,

@@ -24,7 +24,7 @@ class CrudProvider {
         'imageUrl': imageUrl,
         'userId': userId,
         'imageName': image.name,
-        'Comments': [],
+        'comments': [],
         'like': {'likes': 0, 'usernames': []}
       });
 
@@ -96,7 +96,7 @@ class CrudProvider {
              imageUrl: json['imageUrl'],
              id: e.id,
              userId: json['userId'],
-             comments:  (json['Comments'] as List).map((e) => Comments.fromJson(e)).toList(),
+             comments:  (json['comments'] as List).map((e) => Comments.fromJson(e)).toList(),
              description: json['description'],
              title: json['title'],
              imageName: json['imageName']
@@ -122,6 +122,17 @@ class CrudProvider {
   }
 
 
+  Future<String> addComment({ required Comments comments,required String postId}) async {
+    try {
+      await postDb.doc(postId).update({
+          'comments': FieldValue.arrayUnion([comments.toJson()])
+      });
+      return 'success';
+    } on FirebaseException catch (err) {
+      print(err);
+      return '${err.code}';
+    }
+  }
 
 
 
