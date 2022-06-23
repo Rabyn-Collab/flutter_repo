@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sample/models/post.dart';
+import 'package:flutter_sample/provider/chat_provider.dart';
+import 'package:flutter_sample/view/chat_page.dart';
+import 'package:get/get.dart';
 
 import '../provider/crud_provider.dart';
 
@@ -36,7 +39,11 @@ class UserDetail extends StatelessWidget {
                             Text(user.metadata!['email']!),
                             SizedBox(height: 10,),
                             ElevatedButton(
-                                onPressed: () {
+                                onPressed: () async {
+                                final room = await  ref.read(roomProvider).createRoom(user);
+                                if(room != null){
+                               Get.to(() => ChatPage(room), transition: Transition.leftToRight);
+                                }
 
                                 }, child: Text('start chat')
                             )

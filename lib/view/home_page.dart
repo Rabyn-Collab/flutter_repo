@@ -6,6 +6,7 @@ import 'package:flutter_sample/provider/auth_provider.dart';
 import 'package:flutter_sample/provider/crud_provider.dart';
 import 'package:flutter_sample/view/detail_page.dart';
 import 'package:flutter_sample/view/edit_page.dart';
+import 'package:flutter_sample/view/recent_chats.dart';
 import 'package:flutter_sample/view/user_detail.dart';
 import 'package:flutter_sample/widgets/drawer_widget.dart';
 import 'package:get/get.dart';
@@ -23,6 +24,11 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.purple,
         title: Text('Social App'),
+        actions: [
+          TextButton(onPressed: (){
+            Get.to(() => RecentChats(), transition: Transition.leftToRight);
+          }, child: Text('recent chats', style: TextStyle(color: Colors.white),))
+        ],
       ),
         body: Consumer(
             builder: (context, ref, child) {
