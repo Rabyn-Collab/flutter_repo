@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final roomProvider = Provider((ref) => RoomProvider());
 
-final roomStream = StreamProvider((ref) => FirebaseChatCore.instance.rooms());
+final roomStream = StreamProvider.autoDispose((ref) => FirebaseChatCore.instance.rooms());
 
 class RoomProvider {
 
