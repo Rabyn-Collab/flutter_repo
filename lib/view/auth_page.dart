@@ -23,6 +23,7 @@ class AuthPage extends StatelessWidget {
             builder: (context, ref, child) {
               final isLogin = ref.watch(loginProvider);
               final image = ref.watch(imageProvider).image;
+              final isLoad = ref.watch(loadingProvider);
               return Form(
                 key: _form,
                 child: Padding(
@@ -96,16 +97,21 @@ class AuthPage extends StatelessWidget {
 
                       SizedBox(height: 15,),
                       ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(200, 45)
+                        ),
                           onPressed: () async{
                             _form.currentState!.save();
                             if(_form.currentState!.validate()){
                               FocusScope.of(context).unfocus();
                               if(isLogin){
+                                ref.read(loadingProvider.notifier).toggle();
                                 final response = await ref.read(authProvider).userLogin(
                                     email: mailController.text.trim(),
                                     password: passController.text.trim(),
                                     );
                                 if(response != 'success'){
+                                  ref.read(loadingProvider.notifier).toggle();
                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                      duration: Duration(seconds: 1),
                                        content: Text('$response')
@@ -126,6 +132,7 @@ class AuthPage extends StatelessWidget {
                                     ]
                                   );
                                 }else{
+                                  ref.read(loadingProvider.notifier).toggle();
                            final response = await ref.read(authProvider).userSignUp(
                                username: nameController.text.trim(),
                                email: mailController.text.trim(),
@@ -137,7 +144,17 @@ class AuthPage extends StatelessWidget {
                             }
 
 
-                      }, child: Text('Submit')),
+                      }, child:isLoad ?  Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('please wait...', style: TextStyle(fontSize: 17),),
+                          SizedBox(width: 10,),
+                          CircularProgressIndicator(
+                            color: Colors.white,
+                          ),
+                        ],
+                      ) : Text('Submit')
+                      ),
                       SizedBox(height: 15,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

@@ -59,7 +59,7 @@ dev_dependencies:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/images/tmdb.jpg"
+  image_path: "assets/images/fire.png"
 
 
   # The "flutter_lints" package below contains a set of recommended lints to

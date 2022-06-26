@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sample/provider/auth_provider.dart';
+import 'package:flutter_sample/provider/login_provider.dart';
 import 'package:flutter_sample/view/create_page.dart';
 import 'package:get/get.dart';
 
@@ -13,6 +14,7 @@ class DrawerWidget extends StatelessWidget {
       child: Consumer(
         builder: (context, ref, child) {
           final userData = ref.watch(userStream);
+          final isLoad = ref.watch(loadingProvider);
           return userData.when(
               data: (data){
                 return ListView(
@@ -42,6 +44,9 @@ class DrawerWidget extends StatelessWidget {
                     ListTile(
                       onTap: () {
                         Navigator.of(context).pop();
+                        if(isLoad == true){
+                          ref.read(loadingProvider.notifier).toggle();
+                        }
                         ref.read(authProvider).userLogOut();
                       },
                       leading: Icon(Icons.exit_to_app),
