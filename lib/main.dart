@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_sample/models/news.dart';
 import 'package:flutter_sample/models/user.dart';
+import 'package:flutter_sample/view/status_page.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
 
@@ -14,7 +16,7 @@ void main () async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(UserAdapter());
- final userBox =  await Hive.openBox<User>('user');
+ final userBox =  await Hive.openBox<User>('users');
  runApp(ProviderScope(
      overrides: [
        boxA.overrideWithValue(userBox.values.toList().cast<User>())
@@ -30,14 +32,13 @@ void main () async {
 
 
 class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
 
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-     //  home: StatusPage(),
+       home: StatusPage(),
     );
   }
 }

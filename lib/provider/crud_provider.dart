@@ -1,41 +1,25 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_sample/main.dart';
-import 'package:flutter_sample/models/user.dart';
-import 'package:hive/hive.dart';
+import 'package:flutter_sample/api.dart';
 
-import '../api.dart';
+import '../models/products.dart';
 
 
+final productProvider = FutureProvider((ref) => CrudProvider.getProducts());
 
-final userProvider = StateNotifierProvider((ref) => UserProvider(ref.read(boxA)));
+class CrudProvider{
 
-class UserProvider extends StateNotifier<List<User>>{
-  UserProvider(super.state);
-
-
-
-  Future<String> userSignUp({required String username, required String email, required String password}) async{
-      final dio = Dio();
-    try{
-      final response =  await dio.post(Api.userSignUp, data: {
-        'email': email,
-        'full_name': username,
-        'password': password
-      });
-
-      final newUser = User.fromJson(response.data);
-      Hive.box('users').add(newUser);
-      state = [newUser];
-      return 'success';
-    }on DioError catch (err){
-           return '${err.message}';
-    }
-
+ static Future<List<Product>>  getProducts() async{
+    final dio = Dio();
+      try{
+        final response = await  dio.get(Api.baseUrl);
+        final data = (response.data as List).map((e) => Product.fromJson(e)).toList();
+        return data;
+      }on DioError catch(err){
+         throw '${err.message}';
+      }
   }
 
-  // Future<String> userLogin(){
-  //
-  // }
+
 
 }
