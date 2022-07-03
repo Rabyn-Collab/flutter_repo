@@ -80,7 +80,7 @@ class HomePage extends ConsumerWidget {
                        ) ,
                        footer: GridTileBar(
                          backgroundColor: Colors.black87,
-                         leading: Expanded(child: Text(data[index].product_name, style: TextStyle(color: Colors.white),)),
+                         leading: Text(data[index].product_name, style: TextStyle(color: Colors.white),),
                          trailing: Container(
                              margin: EdgeInsets.only(left: 40),
                              child: Text('Rs. ${data[index].price}', style: TextStyle(color: Colors.white),)),
