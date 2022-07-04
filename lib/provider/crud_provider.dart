@@ -4,12 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sample/api.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../models/products.dart';
 import '../models/user.dart';
-
+import 'package:http_parser/http_parser.dart';
 
 final productProvider = FutureProvider((ref) => CrudProvider.getProducts());
+final crudProvider = Provider((ref) => CrudProvider());
 
 class CrudProvider{
 
@@ -28,7 +28,7 @@ class CrudProvider{
 
 
 
- static Future<String>  addProducts({required String product_name, required String product_detail,
+  Future<String>  addProducts({required String product_name, required String product_detail,
  required int price , required XFile image
  }) async{
    final dio = Dio();
@@ -38,7 +38,8 @@ class CrudProvider{
        'product_name': product_name,
        'product_detail': product_detail,
        'price': price,
-       'image': await MultipartFile.fromFile(image.path, filename: image.name,),
+       'image':  await MultipartFile.fromFile(image.path, contentType: MediaType(
+           'image', image.path.split('.').last)),
      });
 
      final response = await  dio.post(Api.addProduct, data: _formData, options: Options(
@@ -56,6 +57,38 @@ class CrudProvider{
 
 
 
+
+ Future<String>  updateProducts({required String product_name, required String product_detail,
+   required int price , XFile? image, required String productId, String? imagePath
+ }) async{
+   final dio = Dio();
+   final userBox = Hive.box<User>('users').values.toList();
+   try{
+
+     if(image == null){
+
+     }else{
+       final _formData = FormData.fromMap({
+         'product_name': product_name,
+         'product_detail': product_detail,
+         'price': price,
+         'image':  await MultipartFile.fromFile(image.path, contentType: MediaType(
+             'image', image.path.split('.').last)),
+       });
+
+       final response = await  dio.post(Api.addProduct, data: _formData, options: Options(
+           headers: {
+             HttpHeaders.authorizationHeader:  'Bearer ${userBox[0].token}'
+           }
+       ));
+     }
+
+
+     return 'success';
+   }on DioError catch(err){
+     return 'something went wrong';
+   }
+ }
 
 
 

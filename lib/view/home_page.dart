@@ -4,6 +4,9 @@ import 'package:flutter_sample/api.dart';
 import 'package:flutter_sample/provider/auth_provider.dart';
 import 'package:flutter_sample/provider/crud_provider.dart';
 import 'package:flutter_sample/provider/login_provider.dart';
+import 'package:flutter_sample/view/create_page.dart';
+import 'package:flutter_sample/view/customize_page.dart';
+import 'package:get/get.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -31,7 +34,8 @@ class HomePage extends ConsumerWidget {
 
               ListTile(
                 onTap: (){
-
+                  Navigator.of(context).pop();
+                 Get.to(() => CreatePage(), transition: Transition.leftToRight);
                 },
                 leading: Icon(Icons.add),
                 title: Text('product create'),
@@ -39,7 +43,8 @@ class HomePage extends ConsumerWidget {
 
               ListTile(
                 onTap: (){
-
+                  Navigator.of(context).pop();
+                  Get.to(() => CustomizePage(), transition: Transition.leftToRight);
                 },
                 leading: Icon(Icons.settings_rounded),
                 title: Text('customize product'),
