@@ -42,7 +42,22 @@ class CustomizePage extends StatelessWidget {
                                    }, icon: Icon(Icons.edit)),
                                IconButton(
                                    onPressed: (){
-
+                                Get.defaultDialog(
+                                  title: 'Are you sure ?',
+                                  content: Text('You want to remove this post'),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: (){
+                                        Navigator.of(context).pop();
+                                        }, child: Text('no')),
+                                    TextButton(
+                                        onPressed: (){
+                                          Navigator.of(context).pop();
+                                           ref.read(crudProvider).removeProduct(productId: data[index].id, imagePath: data[index].imagePath);
+                                           ref.refresh(productProvider);
+                                        }, child: Text('yes'))
+                                  ]
+                                );
                                    }, icon: Icon(Icons.delete)),
                                 ],
                               ),

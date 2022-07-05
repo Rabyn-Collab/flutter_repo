@@ -64,19 +64,28 @@ class CrudProvider{
    final dio = Dio();
    final userBox = Hive.box<User>('users').values.toList();
    try{
-
      if(image == null){
-
+       final response = await  dio.patch('${Api.updateProduct}/$productId', data: {
+         'product_name': product_name,
+         'product_detail': product_detail,
+         'price': price,
+         'photo': 'no need to update'
+       }, options: Options(
+           headers: {
+             HttpHeaders.authorizationHeader:  'Bearer ${userBox[0].token}'
+           }
+       ));
      }else{
        final _formData = FormData.fromMap({
          'product_name': product_name,
          'product_detail': product_detail,
          'price': price,
+         'imageUrl': imagePath,
          'image':  await MultipartFile.fromFile(image.path, contentType: MediaType(
              'image', image.path.split('.').last)),
        });
 
-       final response = await  dio.post(Api.addProduct, data: _formData, options: Options(
+       final response = await  dio.patch('${Api.updateProduct}/$productId', data: _formData, options: Options(
            headers: {
              HttpHeaders.authorizationHeader:  'Bearer ${userBox[0].token}'
            }
@@ -90,6 +99,28 @@ class CrudProvider{
    }
  }
 
+
+
+
+ Future<String>  removeProduct({required String productId,required String imagePath
+ }) async{
+   final dio = Dio();
+   final userBox = Hive.box<User>('users').values.toList();
+   try{
+
+       final response = await  dio.delete('${Api.removeProduct}/$productId', data: {
+         'photo': imagePath,
+       }, options: Options(
+           headers: {
+             HttpHeaders.authorizationHeader:  'Bearer ${userBox[0].token}'
+           }
+       ));
+
+     return 'success';
+   }on DioError catch(err){
+     return 'something went wrong';
+   }
+ }
 
 
 

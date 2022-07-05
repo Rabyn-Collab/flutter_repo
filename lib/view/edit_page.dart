@@ -70,7 +70,7 @@ class EditPage extends StatelessWidget {
                       SizedBox(height: 15,),
                       TextFormField(
                         keyboardType: TextInputType.number,
-                           controller: descController..text = product.price.toString(),
+                           controller: priceController..text = product.price.toString(),
                         validator: (val){
                           if(val!.isEmpty){
                             return 'please provide pricw';
@@ -106,26 +106,30 @@ class EditPage extends StatelessWidget {
                             if(_form.currentState!.validate()){
                               FocusManager.instance.primaryFocus!.unfocus();
                               if(image == null){
-                             // final response = await   ref.read(crudProvider).updatePost(
-                             //     title: titleController.text.trim(),
-                             //     description: descController.text.trim(),
-                             //     postId: post.id
-                             // );
-                             // if(response == 'success'){
-                             //   Navigator.of(context).pop();
-                             // }
+                             final response = await   ref.read(crudProvider).updateProducts(
+                                 product_name: titleController.text.trim(),
+                                 product_detail: descController.text.trim(),
+                                 productId: product.id,
+                               price: int.parse(priceController.text.trim())
+                             );
+                             ref.refresh(productProvider);
+                             if(response == 'success'){
+                               Navigator.of(context).pop();
+                             }
                               }else{
 
-                                // final response = await   ref.read(crudProvider).updatePost(
-                                //     title: titleController.text.trim(),
-                                //     description: descController.text.trim(),
-                                //     postId: post.id,
-                                //   image: image,
-                                //   imageName: post.imageName
-                                // );
-                                // if(response == 'success'){
-                                //   Navigator.of(context).pop();
-                                // }
+                                final response = await   ref.read(crudProvider).updateProducts(
+                                    product_name: titleController.text.trim(),
+                                    product_detail: descController.text.trim(),
+                                   productId: product.id,
+                                    price: int.parse(priceController.text.trim()),
+                                  image: image,
+                                  imagePath: product.imagePath
+                                );
+                                ref.refresh(productProvider);
+                                if(response == 'success'){
+                                  Navigator.of(context).pop();
+                                }
                               }
 
                             }

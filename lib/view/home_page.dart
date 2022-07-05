@@ -6,6 +6,7 @@ import 'package:flutter_sample/provider/crud_provider.dart';
 import 'package:flutter_sample/provider/login_provider.dart';
 import 'package:flutter_sample/view/create_page.dart';
 import 'package:flutter_sample/view/customize_page.dart';
+import 'package:flutter_sample/view/detail_page.dart';
 import 'package:get/get.dart';
 
 class HomePage extends ConsumerWidget {
@@ -78,17 +79,24 @@ class HomePage extends ConsumerWidget {
                       childAspectRatio: 2/2
                     ),
                     itemBuilder:(context, index){
-                     return  GridTile(
-                       child: ClipRRect(
-                           borderRadius: BorderRadius.circular(10),
-                           child: Image.network('${Api.baseUrl}/${data[index].imagePath}', fit: BoxFit.cover,),
-                       ) ,
-                       footer: GridTileBar(
-                         backgroundColor: Colors.black87,
-                         leading: Text(data[index].product_name, style: TextStyle(color: Colors.white),),
-                         trailing: Container(
-                             margin: EdgeInsets.only(left: 40),
-                             child: Text('Rs. ${data[index].price}', style: TextStyle(color: Colors.white),)),
+                     return  InkWell(
+                       onTap: (){
+                         Get.to(() => DetailPage(data[index]), transition: Transition.zoom);
+                       },
+                       child: GridTile(
+                         child: ClipRRect(
+                             borderRadius: BorderRadius.circular(10),
+                             child: Hero(
+                                 tag: data[index].imagePath,
+                                 child: Image.network('${Api.baseUrl}/${data[index].imagePath}', fit: BoxFit.cover,)),
+                         ) ,
+                         footer: GridTileBar(
+                           backgroundColor: Colors.black87,
+                           leading: Text(data[index].product_name, style: TextStyle(color: Colors.white),),
+                           trailing: Container(
+                               margin: EdgeInsets.only(left: 40),
+                               child: Text('Rs. ${data[index].price}', style: TextStyle(color: Colors.white),)),
+                         ),
                        ),
                      );
                     }
