@@ -11,6 +11,7 @@ class DetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
+    final containerHeight = h - h*0.35;
     return Scaffold(
       backgroundColor: Colors.purple,
         body: SafeArea(
@@ -18,6 +19,7 @@ class DetailPage extends StatelessWidget {
             child: Stack(
               children: [
                 Container(
+                   height:  containerHeight,
                   margin: EdgeInsets.only(top: h * 0.35),
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -26,6 +28,28 @@ class DetailPage extends StatelessWidget {
                       topLeft: Radius.circular(45)
                     )
                   ),
+                  child: LayoutBuilder(
+                    builder: (context, constrained) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Expanded(
+                              child: Container(
+                                margin: EdgeInsets.only(top: constrained.maxHeight * 0.15),
+                                  child: Text(product.product_detail)),
+                            ),
+                            ElevatedButton(
+                                onPressed: () {
+
+                                }, child: Text('Add To Cart')),
+                            SizedBox(height: 10,)
+                          ],
+                        ),
+                      );
+                    }
+                  ),
                 ),
                 Container(
                   padding: EdgeInsets.only(left: 20, top: 10),
@@ -33,7 +57,7 @@ class DetailPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(product.product_name),
+                      Text(product.product_name, style: TextStyle(fontSize: 20, color: Colors.white),),
                       Container(
                         margin: EdgeInsets.only(top: 95),
                         child: Row(
