@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sample/api.dart';
 import 'package:flutter_sample/models/products.dart';
+import 'package:flutter_sample/provider/cart_provider.dart';
+import 'package:flutter_sample/view/cart_page.dart';
+import 'package:flutter_sample/widgets/snackbar_show.dart';
+import 'package:get/get.dart';
 
 
 
@@ -40,10 +45,20 @@ class DetailPage extends StatelessWidget {
                                 margin: EdgeInsets.only(top: constrained.maxHeight * 0.15),
                                   child: Text(product.product_detail)),
                             ),
-                            ElevatedButton(
-                                onPressed: () {
+                            Consumer(
+                              builder: (context, ref, child) {
+                                return ElevatedButton(
+                                    onPressed: () {
+                                     final response = ref.read(cartProvider.notifier).addProductToCart(product);
+                                     if(response == 'success'){
+                                       SnackBarProvider.showSnack(context, 'Successfully added to cart');
+                                     }else{
+                                       SnackBarProvider.showSnack(context, response);
 
-                                }, child: Text('Add To Cart')),
+                                     }
+                                    }, child: Text('Add To Cart'));
+                              }
+                            ),
                             SizedBox(height: 10,)
                           ],
                         ),

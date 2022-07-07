@@ -4,6 +4,7 @@ import 'package:flutter_sample/api.dart';
 import 'package:flutter_sample/provider/auth_provider.dart';
 import 'package:flutter_sample/provider/crud_provider.dart';
 import 'package:flutter_sample/provider/login_provider.dart';
+import 'package:flutter_sample/view/cart_page.dart';
 import 'package:flutter_sample/view/create_page.dart';
 import 'package:flutter_sample/view/customize_page.dart';
 import 'package:flutter_sample/view/detail_page.dart';
@@ -21,6 +22,12 @@ class HomePage extends ConsumerWidget {
       appBar: AppBar(
         backgroundColor: Colors.purple,
         title: Text('Sample Shop'),
+        actions: [
+          IconButton(
+              onPressed: (){
+                Get.to(() => CartPage(), transition: Transition.leftToRight);
+              }, icon: Icon(Icons.shopping_cart))
+        ],
       ),
         drawer: Drawer(
           child: ListView(
