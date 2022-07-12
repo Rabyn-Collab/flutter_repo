@@ -16,5 +16,13 @@ class  SnackBarProvider{
     ));
   }
 
+  static showSuccessErrorSnack(BuildContext context, String message){
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      duration: Duration(milliseconds: 1500),
+      content: Text(message),
+    ));
+  }
+
 
 }

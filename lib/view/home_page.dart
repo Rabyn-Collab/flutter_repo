@@ -10,6 +10,8 @@ import 'package:flutter_sample/view/customize_page.dart';
 import 'package:flutter_sample/view/detail_page.dart';
 import 'package:get/get.dart';
 
+import 'history_page.dart';
+
 class HomePage extends ConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -57,7 +59,14 @@ class HomePage extends ConsumerWidget {
                 leading: Icon(Icons.settings_rounded),
                 title: Text('customize product'),
               ),
-
+              ListTile(
+                onTap: (){
+                  Navigator.of(context).pop();
+                  Get.to(() => HistoryPage(), transition: Transition.leftToRight);
+                },
+                leading: Icon(Icons.settings_rounded),
+                title: Text('Order History'),
+              ),
 
               ListTile(
                 onTap: (){
@@ -97,12 +106,16 @@ class HomePage extends ConsumerWidget {
                                  tag: data[index].imagePath,
                                  child: Image.network('${Api.baseUrl}/${data[index].imagePath}', fit: BoxFit.cover,)),
                          ) ,
-                         footer: GridTileBar(
-                           backgroundColor: Colors.black87,
-                           leading: Text(data[index].product_name, style: TextStyle(color: Colors.white),),
-                           trailing: Container(
-                               margin: EdgeInsets.only(left: 40),
-                               child: Text('Rs. ${data[index].price}', style: TextStyle(color: Colors.white),)),
+                         footer: Container(
+                           height: 30,
+                           color: Colors.black87,
+                           child: Row(
+                             mainAxisAlignment: MainAxisAlignment.spaceAround,
+                             children: [
+                             Text(data[index].product_name, style: TextStyle(color: Colors.white),),
+                             Text('Rs. ${data[index].price}',
+                               style: TextStyle(color: Colors.white), overflow: TextOverflow.ellipsis,)
+                             ])
                          ),
                        ),
                      );

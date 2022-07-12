@@ -89,6 +89,11 @@ class CartProvider extends StateNotifier<List<CartItem>>{
 }
 
 
+void clearCarts(){
+  Hive.box<CartItem>('carts').clear();
+  state = [];
+}
+
 
 
 }

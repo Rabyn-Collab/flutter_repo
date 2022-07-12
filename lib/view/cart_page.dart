@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sample/api.dart';
 import 'package:flutter_sample/provider/cart_provider.dart';
+import 'package:flutter_sample/provider/order_provider.dart';
+import 'package:flutter_sample/view/home_page.dart';
+import 'package:flutter_sample/widgets/snackbar_show.dart';
+import 'package:get/get.dart';
 
 
 
@@ -84,7 +88,21 @@ class CartPage extends StatelessWidget {
                               ],
                             ),
                             SizedBox(height: 15,),
-                            ElevatedButton(onPressed: (){}, child: Text('Check Out'))
+                            ElevatedButton(
+                                onPressed: () async{
+                                final response = await  ref.read(orderProvider).addOrder(
+                                      amount: total,
+                                      carts: cartData
+                                  );
+                                if(response == 'success'){
+                                  ref.refresh(orderHistory);
+                                  ref.read(cartProvider.notifier).clearCarts();
+                                  Get.offAll(() => HomePage(), transition: Transition.leftToRight);
+                                }else{
+                                  SnackBarProvider.showSuccessErrorSnack(context, response);
+                                }
+                                }, child: Text('Check Out')
+                            )
                           ],
                         ),
                       ),

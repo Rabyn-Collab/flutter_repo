@@ -43,6 +43,17 @@ part 'cart_item.g.dart';
       }
 
 
+     Map<String, dynamic> toJson(){
+        return {
+          'id': this.id,
+          'price':this.price,
+          'title': this.title,
+          'quantity': this.quantity,
+          'total': this.total,
+          'imageUrl': this.imageUrl
+        };
+     }
+
       @override
       String toString() {
         return 'CartItem('

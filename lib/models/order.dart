@@ -23,7 +23,7 @@ class Order{
    return Order(
        dateTime: json['dateTime'],
        amount: json['amount'],
-       products: json['products'],
+       products: (json['products'] as List).map((e) => CartItem.fromJson(e)).toList(),
        userId: json['userId']
    );
 
