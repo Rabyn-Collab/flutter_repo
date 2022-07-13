@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_sample/location/location_check.dart';
 import 'package:flutter_sample/models/cart_item.dart';
 import 'package:flutter_sample/models/user.dart';
 import 'package:flutter_sample/view/status_page.dart';
@@ -42,7 +43,7 @@ class Home extends StatelessWidget {
 
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-       home: StatusPage(),
+       home: LocationCheck(),
     );
   }
 }

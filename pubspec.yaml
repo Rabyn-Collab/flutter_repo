@@ -44,6 +44,9 @@ dependencies:
   hive_flutter: ^1.1.0
   hive_generator: ^1.1.3
   intl: ^0.17.0
+  geocoding: ^2.0.4
+  geolocator: ^9.0.1
+  google_maps_flutter: ^2.1.8
 
 dev_dependencies:
   flutter_test:
